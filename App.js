@@ -14,6 +14,14 @@ import firebaseConfig from "./config";
 // initialize firebase with the config file
 firebase.initializeApp(firebaseConfig);
 
+firebase.auth().onAuthStateChanged((user) => {
+  if (user != null) {
+    console.log("We are authenticated now!");
+  }
+
+  // Do other things
+});
+
 export default function App() {
   return (
       <AppContainer />

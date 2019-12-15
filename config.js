@@ -5,5 +5,5 @@ export default firebaseConfig = {
   projectId: "test-31908",
   storageBucket: "test-31908.appspot.com",
   messagingSenderId: "745878790599",
-  appId: "1:745878790599:web:349ff1b19011bf7160b9e2"
+  appId: "1:745878790599:web:ed60d4bdb994ba1660b9e2"
 };

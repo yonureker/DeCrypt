@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -31,6 +31,21 @@ const LoginScreen = props => {
         console.log(error);
       });
   };
+
+  const loginWithFacebook = async() => {
+
+    //ENTER YOUR APP ID 
+    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('567945563749281', { permissions: ['public_profile'] })
+
+    if (type == 'success') {
+
+      const credential = firebase.auth.FacebookAuthProvider.credential(token)
+
+      firebase.auth().signInWithCredential(credential).catch((error) => {
+        console.log(error)
+      })
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -66,11 +81,11 @@ const LoginScreen = props => {
           </Text>
         </View>
 
-        <View style={styles.socialLogin}>
+        {/* <View style={styles.socialLogin}>
           <TouchableOpacity
             style={{ ...styles.button, backgroundColor: "#3B5998" }}
             onPress={() => {
-              loginUser(email, password);
+              loginWithFacebook();
             }}
           >
             <Text style={{ fontSize: 20, color: "#ffffff" }}>
@@ -81,18 +96,18 @@ const LoginScreen = props => {
           <TouchableOpacity
             style={{ ...styles.button, backgroundColor: "#D73D32" }}
             onPress={() => {
-              loginUser(email, password);
+              loginWithFacebook();
             }}
           >
             <Text style={{ fontSize: 20, color: "#ffffff" }}>
               Log in with Google
             </Text>
           </TouchableOpacity>
-        </View>
-        <View style={{alignItems:'center', marginTop: 15}}>
+        </View> */}
+        <View style={styles.signupContainer}>
           <Text>
-            Don't have an account? Sign Up.
-          </Text>
+            Don't have an account? 
+          </Text><Button title="Sign Up." onPress={() => props.navigation.navigate("Signup")} />
         </View>
       </View>
     </View>
@@ -136,6 +151,12 @@ const styles = StyleSheet.create({
     minHeight: 50,
     alignItems: "center",
     justifyContent: "center"
+  },
+  signupContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 15,
+    flexDirection: "row"
   }
 });
 
