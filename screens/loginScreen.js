@@ -18,7 +18,11 @@ const LoginScreen = props => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => props.navigation.navigate("Dashboard"))
+      .then(() =>
+        props.navigation.navigate("Dashboard", {
+          email: email
+        })
+      )
       .catch(function(error) {
         // Handle Errors here.
         const errorCode = error.code;
@@ -32,20 +36,28 @@ const LoginScreen = props => {
       });
   };
 
-  const loginWithFacebook = async() => {
+  const loginWithFacebook = async () => {
+    const {
+      type,
+      token
+    } = await Expo.Facebook.logInWithReadPermissionsAsync("567945563749281", {
+      permissions: ["public_profile"]
+    }).then(response => console.log(response))
+    .catch(error => {
+      console.log(error);
+    });
 
-    //ENTER YOUR APP ID 
-    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('567945563749281', { permissions: ['public_profile'] })
+    if (type == "success") {
+      const credential = firebase.auth.FacebookAuthProvider.credential(token);
 
-    if (type == 'success') {
-
-      const credential = firebase.auth.FacebookAuthProvider.credential(token)
-
-      firebase.auth().signInWithCredential(credential).catch((error) => {
-        console.log(error)
-      })
+      firebase
+        .auth()
+        .signInWithCredential(credential)
+        .catch(error => {
+          console.log(error);
+        });
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -75,13 +87,11 @@ const LoginScreen = props => {
           </TouchableOpacity>
         </View>
 
-        <View style={{alignItems:'center', marginTop: 15}}>
-          <Text>
-            -- or --
-          </Text>
+        <View style={{ alignItems: "center", marginTop: 15 }}>
+          <Text>-- or --</Text>
         </View>
 
-        {/* <View style={styles.socialLogin}>
+        <View style={styles.socialLogin}>
           <TouchableOpacity
             style={{ ...styles.button, backgroundColor: "#3B5998" }}
             onPress={() => {
@@ -103,11 +113,13 @@ const LoginScreen = props => {
               Log in with Google
             </Text>
           </TouchableOpacity>
-        </View> */}
+        </View>
         <View style={styles.signupContainer}>
-          <Text>
-            Don't have an account? 
-          </Text><Button title="Sign Up." onPress={() => props.navigation.navigate("Signup")} />
+          <Text>Don't have an account?</Text>
+          <Button
+            title="Sign Up."
+            onPress={() => props.navigation.navigate("Signup")}
+          />
         </View>
       </View>
     </View>
@@ -130,7 +142,7 @@ const styles = StyleSheet.create({
     width: "100%",
     minWidth: 400,
     borderWidth: 1,
-    borderColor: 'black'
+    borderColor: "black"
   },
   textInput: {
     width: "100%",
@@ -153,8 +165,8 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   signupContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 15,
     flexDirection: "row"
   }
