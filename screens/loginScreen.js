@@ -11,8 +11,7 @@ import {
 
 import * as firebase from "firebase";
 import * as Facebook from 'expo-facebook';
-
-firebase.auth().currentUser
+import * as Google from 'expo-google-app-auth';
 
 const LoginScreen = props => {
   const [email, setEmail] = useState("");
@@ -71,6 +70,30 @@ const LoginScreen = props => {
     }
   };
 
+  const loginWithGoogle = async() => {
+    try {
+      const result = await Google.logInAsync({
+        iosClientId: '691486029945-ab0tvpd5mcc9kej5s6u8ctip8jv0br5j.apps.googleusercontent.com',
+        scopes: ['profile', 'email'],
+      });
+  
+      if (result.type === 'success') {
+        // return console.log(result);
+        const credential = firebase.auth.GoogleAuthProvider.credential(result.idToken)
+        firebase.auth().signInWithCredential(credential)
+        .then(() => props.navigation.navigate('Dashboard'))
+        .catch((error) => {
+          console.log(error)
+        })
+
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      return { error: true };
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.loginModule}>
@@ -118,7 +141,7 @@ const LoginScreen = props => {
           <TouchableOpacity
             style={{ ...styles.button, backgroundColor: "#D73D32" }}
             onPress={() => {
-              loginWithFacebook();
+              loginWithGoogle();
             }}
           >
             <Text style={{ fontSize: 20, color: "#ffffff" }}>

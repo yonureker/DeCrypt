@@ -5,11 +5,16 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "react-native"
   },
   "dependencies": {
     "expo": "~36.0.0",
     "expo-facebook": "^8.0.0",
+    "expo-google-app-auth": "^8.0.0",
     "firebase": "^7.6.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
@@ -22,7 +27,8 @@
     "react-navigation-stack": "^1.10.3"
   },
   "devDependencies": {
-    "babel-preset-expo": "~8.0.0"
+    "babel-preset-expo": "~8.0.0",
+    "jest": "^24.9.0"
   },
   "private": true
 }
