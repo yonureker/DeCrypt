@@ -9,7 +9,7 @@ import SignupScreen from './screens/signupScreen'
 import DashboardScreen from './screens/dashboardScreen'
 
 import * as firebase from "firebase";
-import firebaseConfig from "./config";
+import firebaseConfig from "./config/config";
 
 // initialize firebase with the config file
 firebase.initializeApp(firebaseConfig);
@@ -17,10 +17,10 @@ firebase.initializeApp(firebaseConfig);
 firebase.auth().onAuthStateChanged((user) => {
   if (user != null) {
     console.log("We are authenticated now!");
-    console.log(user.email)
+    console.log(user);
+  } else {
+    console.log("We are not authenticated!");
   }
-
-  // Do other things
 });
 
 export default function App() {

@@ -12,6 +12,8 @@ import {
 import * as firebase from "firebase";
 import * as Facebook from 'expo-facebook';
 
+firebase.auth().currentUser
+
 const LoginScreen = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,11 +22,8 @@ const LoginScreen = props => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(user => console.log(user))
       .then(() =>
-        props.navigation.navigate("Dashboard", {
-          email: email
-        })
+        props.navigation.navigate("Dashboard")
       )
       .catch(function(error) {
         // Handle Errors here.
@@ -49,14 +48,21 @@ const LoginScreen = props => {
         permissions,
         declinedPermissions
       } = await Facebook.logInWithReadPermissionsAsync({
-        permissions: ["public_profile"]
+        permissions: ["public_profile", 'email']
       });
       if (type === "success") {
-        // Get the user's name using Facebook's Graph API
-        const response = await fetch(
-          `https://graph.facebook.com/me?access_token=${token}`
-        );
-        Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
+        // Get the user's id, name and email using Facebook's Graph API
+        // const response = await fetch(
+        //   `https://graph.facebook.com/me?fields=id,name,email&access_token=${token}`
+        // );
+
+        const credential = firebase.auth.FacebookAuthProvider.credential(token)
+
+        firebase.auth().signInWithCredential(credential)
+        .then(() => props.navigation.navigate('Dashboard'))
+        .catch((error) => {
+          console.log(error)
+        })
       } else {
         // type === 'cancel'
       }

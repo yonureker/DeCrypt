@@ -2,8 +2,6 @@ import React from "react";
 import {
   View,
   Text,
-  TextInput,
-  Button,
   StyleSheet,
   TouchableOpacity
 } from "react-native";
@@ -11,8 +9,6 @@ import {
 import * as firebase from "firebase";
 
 const DashboardScreen = props => {
-  console.log(props);
-
   const logoutUser = () =>
     firebase
       .auth()
@@ -25,11 +21,14 @@ const DashboardScreen = props => {
           console.error("Sign Out Error", error);
         }
       )
-      .then(props.navigation.navigate('Login'))
+      .then(props.navigation.navigate("Login"));
+
+  const currentUser = firebase.auth().currentUser;
 
   return (
     <View style={styles.container}>
-      <Text>User Email: {props.navigation.state.params.email}</Text>
+      <Text>{currentUser.email}</Text>
+      <Text>{currentUser.displayName}</Text>
 
       <TouchableOpacity
         style={styles.button}
@@ -56,7 +55,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     backgroundColor: "green",
     minHeight: 50,
-    width: '80%',
+    width: "80%",
     alignItems: "center",
     justifyContent: "center"
   }

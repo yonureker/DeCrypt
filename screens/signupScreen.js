@@ -11,6 +11,7 @@ import {
 import * as firebase from "firebase";
 
 const SignupScreen = props => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -18,11 +19,13 @@ const SignupScreen = props => {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(() => props.navigation.navigate("Dashboard", {
-        email: email
+      // set new user's name to name
+      .then(() => firebase.auth().currentUser.updateProfile({
+        displayName: name
       }))
+      .then(() => props.navigation.navigate("Dashboard"))
       .catch(function(error) {
-        // Handle Errors here.
+        // Handling errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
         if (errorCode == "auth/weak-password") {
@@ -40,6 +43,13 @@ const SignupScreen = props => {
     <View style={styles.container}>
       <View style={styles.loginModule}>
         <View>
+        <TextInput
+            style={styles.textInput}
+            autoCapitalize="none"
+            placeholder="Full Name"
+            placeholderTextColor="#D7DBDD"
+            onChangeText={name => setName(name)}
+          />
           <TextInput
             style={styles.textInput}
             autoCapitalize="none"

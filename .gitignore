@@ -16,3 +16,6 @@ web-report/
 # remove API keys
 config.js
 
+*config*
+
+
