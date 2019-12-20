@@ -18,7 +18,9 @@ const SignupScreen = props => {
     firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(() => props.navigation.navigate("Dashboard"))
+      .then(() => props.navigation.navigate("Dashboard", {
+        email: email
+      }))
       .catch(function(error) {
         // Handle Errors here.
         var errorCode = error.code;

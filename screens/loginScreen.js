@@ -5,10 +5,12 @@ import {
   TextInput,
   Button,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from "react-native";
 
 import * as firebase from "firebase";
+import * as Facebook from 'expo-facebook';
 
 const LoginScreen = props => {
   const [email, setEmail] = useState("");
@@ -18,6 +20,7 @@ const LoginScreen = props => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
+      .then(user => console.log(user))
       .then(() =>
         props.navigation.navigate("Dashboard", {
           email: email
@@ -37,25 +40,28 @@ const LoginScreen = props => {
   };
 
   const loginWithFacebook = async () => {
-    const {
-      type,
-      token
-    } = await Expo.Facebook.logInWithReadPermissionsAsync("567945563749281", {
-      permissions: ["public_profile"]
-    }).then(response => console.log(response))
-    .catch(error => {
-      console.log(error);
-    });
-
-    if (type == "success") {
-      const credential = firebase.auth.FacebookAuthProvider.credential(token);
-
-      firebase
-        .auth()
-        .signInWithCredential(credential)
-        .catch(error => {
-          console.log(error);
-        });
+    try {
+      await Facebook.initializeAsync("567945563749281");
+      const {
+        type,
+        token,
+        expires,
+        permissions,
+        declinedPermissions
+      } = await Facebook.logInWithReadPermissionsAsync({
+        permissions: ["public_profile"]
+      });
+      if (type === "success") {
+        // Get the user's name using Facebook's Graph API
+        const response = await fetch(
+          `https://graph.facebook.com/me?access_token=${token}`
+        );
+        Alert.alert("Logged in!", `Hi ${(await response.json()).name}!`);
+      } else {
+        // type === 'cancel'
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
     }
   };
 

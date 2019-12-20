@@ -17,6 +17,7 @@ firebase.initializeApp(firebaseConfig);
 firebase.auth().onAuthStateChanged((user) => {
   if (user != null) {
     console.log("We are authenticated now!");
+    console.log(user.email)
   }
 
   // Do other things
