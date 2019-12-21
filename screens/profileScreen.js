@@ -7,8 +7,9 @@ import {
 } from "react-native";
 
 import * as firebase from "firebase";
+import { Ionicons } from '@expo/vector-icons';
 
-const DashboardScreen = props => {
+const ProfileScreen = props => {
   const logoutUser = () =>
     firebase
       .auth()
@@ -23,13 +24,15 @@ const DashboardScreen = props => {
       )
       .then(props.navigation.navigate("Login"));
 
-  const currentUser = firebase.auth().currentUser;
+  const currentUser = firebase.auth().currentUser
+  console.log(firebase.auth().currentUser);
 
   return (
     <View style={styles.container}>
-      <Text>{currentUser.email}</Text>
-      <Text>{currentUser.displayName}</Text>
-
+      <View style={styles.userInfo}>
+      <Text>Email: {currentUser.email}</Text>
+      <Text>Name: {currentUser.displayName}</Text>
+      </View>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
@@ -50,6 +53,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%"
   },
+  userInfo: {
+    width: "80%",
+    borderColor: '#ccc',
+    borderWidth: 1
+  },
   button: {
     marginTop: 10,
     color: "#fff",
@@ -61,9 +69,9 @@ const styles = StyleSheet.create({
   }
 });
 
-DashboardScreen.navigationOptions = {
-  title: "Dashboard",
+ProfileScreen.navigationOptions = {
+  title: "Profile",
   headerLeft: null
 };
 
-export default DashboardScreen;
+export default ProfileScreen;

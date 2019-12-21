@@ -10,8 +10,8 @@ import {
 } from "react-native";
 
 import * as firebase from "firebase";
-import * as Facebook from 'expo-facebook';
-import * as Google from 'expo-google-app-auth';
+import * as Facebook from "expo-facebook";
+import * as Google from "expo-google-app-auth";
 
 const LoginScreen = props => {
   const [email, setEmail] = useState("");
@@ -21,9 +21,7 @@ const LoginScreen = props => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() =>
-        props.navigation.navigate("Dashboard")
-      )
+      .then(() => props.navigation.navigate("Profile"))
       .catch(function(error) {
         // Handle Errors here.
         const errorCode = error.code;
@@ -47,21 +45,18 @@ const LoginScreen = props => {
         permissions,
         declinedPermissions
       } = await Facebook.logInWithReadPermissionsAsync({
-        permissions: ["public_profile", 'email']
+        permissions: ["public_profile", "email"]
       });
       if (type === "success") {
-        // Get the user's id, name and email using Facebook's Graph API
-        // const response = await fetch(
-        //   `https://graph.facebook.com/me?fields=id,name,email&access_token=${token}`
-        // );
+        const credential = firebase.auth.FacebookAuthProvider.credential(token);
 
-        const credential = firebase.auth.FacebookAuthProvider.credential(token)
-
-        firebase.auth().signInWithCredential(credential)
-        .then(() => props.navigation.navigate('Dashboard'))
-        .catch((error) => {
-          console.log(error)
-        })
+        firebase
+          .auth()
+          .signInWithCredential(credential)
+          .then(() => props.navigation.navigate("Profile"))
+          .catch(error => {
+            console.log(error);
+          });
       } else {
         // type === 'cancel'
       }
@@ -70,29 +65,34 @@ const LoginScreen = props => {
     }
   };
 
-  const loginWithGoogle = async() => {
+  const loginWithGoogle = async () => {
     try {
       const result = await Google.logInAsync({
-        iosClientId: '691486029945-ab0tvpd5mcc9kej5s6u8ctip8jv0br5j.apps.googleusercontent.com',
-        scopes: ['profile', 'email'],
+        iosClientId:
+          "691486029945-ab0tvpd5mcc9kej5s6u8ctip8jv0br5j.apps.googleusercontent.com",
+        androidClientId:
+          "691486029945-m1m7fm641el96u6de6kmsbcfk81kqrt8.apps.googleusercontent.com",
+        scopes: ["profile", "email"]
       });
-  
-      if (result.type === 'success') {
-        // return console.log(result);
-        const credential = firebase.auth.GoogleAuthProvider.credential(result.idToken)
-        firebase.auth().signInWithCredential(credential)
-        .then(() => props.navigation.navigate('Dashboard'))
-        .catch((error) => {
-          console.log(error)
-        })
 
+      if (result.type === "success") {
+        const credential = firebase.auth.GoogleAuthProvider.credential(
+          result.idToken
+        );
+        firebase
+          .auth()
+          .signInWithCredential(credential)
+          .then(() => props.navigation.navigate("Profile"))
+          .catch(error => {
+            console.log(error);
+          });
       } else {
         return { cancelled: true };
       }
     } catch (e) {
       return { error: true };
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -150,11 +150,15 @@ const LoginScreen = props => {
           </TouchableOpacity>
         </View>
         <View style={styles.signupContainer}>
-          <Text>Don't have an account?</Text>
-          <Button
-            title="Sign Up."
-            onPress={() => props.navigation.navigate("Signup")}
-          />
+          <Text>
+            Don't have an account?{" "}
+            <Text
+              style={styles.textLink}
+              onPress={() => props.navigation.navigate("Signup")}
+            >
+              Sign Up.
+            </Text>
+          </Text>
         </View>
       </View>
     </View>
@@ -172,6 +176,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: "100%"
+  },
+  textLink: {
+    color: "#49AEB5"
   },
   loginContainer: {
     width: "100%",

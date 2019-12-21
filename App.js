@@ -6,7 +6,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import LoginScreen from './screens/loginScreen'
 import SignupScreen from './screens/signupScreen'
-import DashboardScreen from './screens/dashboardScreen'
+import ProfileScreen from './screens/profileScreen'
 
 import * as firebase from "firebase";
 import firebaseConfig from "./config/config";
@@ -32,10 +32,10 @@ const AppNavigator = createStackNavigator(
   {
     Login: LoginScreen,
     Signup: SignupScreen,
-    Dashboard: DashboardScreen
+    Profile: ProfileScreen
   },
   {
-    initialRouteName: 'Login',
+    initialRouteName: 'Login'
   }
 );
 

@@ -9,6 +9,8 @@ import {
 } from "react-native";
 
 import * as firebase from "firebase";
+import * as Facebook from "expo-facebook";
+import * as Google from "expo-google-app-auth";
 
 const SignupScreen = props => {
   const [name, setName] = useState("");
@@ -20,10 +22,12 @@ const SignupScreen = props => {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       // set new user's name to name
-      .then(() => firebase.auth().currentUser.updateProfile({
-        displayName: name
-      }))
-      .then(() => props.navigation.navigate("Dashboard"))
+      .then(() =>
+        firebase.auth().currentUser.updateProfile({
+          displayName: name
+        })
+      )
+      .then(() => props.navigation.navigate("Profile"))
       .catch(function(error) {
         // Handling errors here.
         var errorCode = error.code;
@@ -37,13 +41,76 @@ const SignupScreen = props => {
       });
   };
 
-  
+  const loginWithFacebook = async () => {
+    try {
+      await Facebook.initializeAsync("567945563749281");
+      const {
+        type,
+        token,
+        expires,
+        permissions,
+        declinedPermissions
+      } = await Facebook.logInWithReadPermissionsAsync({
+        permissions: ["public_profile", "email"]
+      });
+      if (type === "success") {
+        // Get the user's id, name and email using Facebook's Graph API
+        // const response = await fetch(
+        //   `https://graph.facebook.com/me?fields=id,name,email&access_token=${token}`
+        // );
+
+        const credential = firebase.auth.FacebookAuthProvider.credential(token);
+
+        firebase
+          .auth()
+          .signInWithCredential(credential)
+          .then(() => props.navigation.navigate("Profile"))
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        // type === 'cancel'
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
+    }
+  };
+
+  const loginWithGoogle = async () => {
+    try {
+      const result = await Google.logInAsync({
+        iosClientId:
+          "691486029945-ab0tvpd5mcc9kej5s6u8ctip8jv0br5j.apps.googleusercontent.com",
+        androidClientId:
+          "691486029945-m1m7fm641el96u6de6kmsbcfk81kqrt8.apps.googleusercontent.com",
+        scopes: ["profile", "email"]
+      });
+
+      if (result.type === "success") {
+        // return console.log(result);
+        const credential = firebase.auth.GoogleAuthProvider.credential(
+          result.idToken
+        );
+        firebase
+          .auth()
+          .signInWithCredential(credential)
+          .then(() => props.navigation.navigate("Profile"))
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      return { error: true };
+    }
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.loginModule}>
         <View>
-        <TextInput
+          <TextInput
             style={styles.textInput}
             autoCapitalize="none"
             placeholder="Full Name"
@@ -74,17 +141,44 @@ const SignupScreen = props => {
           </TouchableOpacity>
         </View>
 
-        <View style={{alignItems:'center', marginTop: 15}}>
-          <Text>
-            -- or --
-          </Text>
+        <View style={{ alignItems: "center", marginTop: 15 }}>
+          <Text>-- or --</Text>
         </View>
 
-        
+        <View style={styles.socialLogin}>
+          <TouchableOpacity
+            style={{ ...styles.button, backgroundColor: "#3B5998" }}
+            onPress={() => {
+              loginWithFacebook();
+            }}
+          >
+            <Text style={{ fontSize: 20, color: "#ffffff" }}>
+              Sign up with Facebook
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{ ...styles.button, backgroundColor: "#D73D32" }}
+            onPress={() => {
+              loginWithGoogle();
+            }}
+          >
+            <Text style={{ fontSize: 20, color: "#ffffff" }}>
+              Sign up with Google
+            </Text>
+          </TouchableOpacity>
+        </View>
+
         <View style={styles.signupContainer}>
           <Text>
-            Already have an account? 
-          </Text><Button title="Log In." onPress={() => props.navigation.navigate("Login")} />
+            Already have an account?{" "}
+            <Text
+              style={styles.textLink}
+              onPress={() => props.navigation.navigate("Login")}
+            >
+              Log In.
+            </Text>
+          </Text>
         </View>
       </View>
     </View>
@@ -107,7 +201,10 @@ const styles = StyleSheet.create({
     width: "100%",
     minWidth: 400,
     borderWidth: 1,
-    borderColor: 'black'
+    borderColor: "black"
+  },
+  textLink: {
+    color: "#49AEB5"
   },
   textInput: {
     width: "100%",
@@ -130,8 +227,8 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   signupContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 15,
     flexDirection: "row"
   }
