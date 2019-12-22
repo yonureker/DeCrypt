@@ -53,12 +53,56 @@ const ProfileScreen = props => {
     }
   };
 
+  const linkToGoogle = async () => {
+    try {
+      const result = await Google.logInAsync({
+        iosClientId:
+          "691486029945-ab0tvpd5mcc9kej5s6u8ctip8jv0br5j.apps.googleusercontent.com",
+        androidClientId:
+          "691486029945-m1m7fm641el96u6de6kmsbcfk81kqrt8.apps.googleusercontent.com",
+        scopes: ["profile", "email"]
+      });
+
+      if (result.type === "success") {
+        const credential = firebase.auth.GoogleAuthProvider.credential(
+          result.idToken
+        );
+        firebase
+          .auth()
+          .currentUser.linkWithCredential(credential)
+          .then(() => props.navigation.navigate("Profile"))
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      return { error: true };
+    }
+  };
+
+  const toBeLinked = () => {
+    // the array of all selected linking options
+    const allLinkingOptions = ["facebook.com", "google.com", "password"]
+
+    // the array of already linked login options
+    const alreadyLinked = firebase.auth().currentUser.providerData.map((el) => el.providerId)
+
+    // filter array 2 from array 1 and find not linked login options
+    const notLinkedYet = allLinkingOptions.filter(x => !alreadyLinked.includes(x))
+
+    return notLinkedYet;
+  }
+
   const currentUser = firebase.auth().currentUser;
+  
   
 
   return (
     <View style={styles.container}>
-      {console.log(currentUser.providerData)}
+      {console.log(currentUser.providerData.map((el) => el.providerId))}
+      {console.log(toBeLinked())}
       <View style={styles.userInfoContainer}>
         <View style={{ marginBottom: 50 }}>
           <ProfilePhoto currentUser={currentUser}></ProfilePhoto>
@@ -81,6 +125,24 @@ const ProfileScreen = props => {
         }}
       >
         <Text style={{ fontSize: 20, color: "#ffffff" }}>Link to Facebook</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={{...styles.button, backgroundColor: '#D73D32'}}
+        onPress={() => {
+          linkToGoogle();
+        }}
+      >
+        <Text style={{ fontSize: 20, color: "#ffffff" }}>Link to Google</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={{...styles.button, backgroundColor: '#838888'}}
+        onPress={() => {
+          linkToPassword();
+        }}
+      >
+        <Text style={{ fontSize: 20, color: "#ffffff" }}>Link to Password</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
