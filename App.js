@@ -22,11 +22,11 @@ const storage = firebase.storage();
 
 firebase.auth().onAuthStateChanged((user) => {
   if (user != null) {
-    console.log("We are authenticated now!");
+    return 'Profile'
   } else {
-    console.log("We are not authenticated!");
+    return 'Login'
   }
-});
+})
 
 export default function App() {
   return (
@@ -41,7 +41,7 @@ const AppNavigator = createStackNavigator(
     Profile: ProfileScreen
   },
   {
-    initialRouteName: 'Login'
+    initialRouteName: 'Signup'
   }
 );
 
