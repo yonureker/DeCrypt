@@ -49,15 +49,13 @@ const LinkProviders = props => {
           .auth()
           .currentUser.linkWithCredential(credential)
           .then(() => Alert.alert("Your Google account is linked."))
-          // .then(() => props.navigation.navigate("Profile"))
+          .then(() => props.navigation.navigate("Profile"))
           .catch(error => {
             Alert.alert(error);
           });
       } else {
         return { cancelled: true };
       }
-
-      // props.navigation.navigate("Profile")
     } catch (e) {
       return { error: true };
     }
