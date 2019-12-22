@@ -41,9 +41,6 @@ const LoginScreen = props => {
       const {
         type,
         token,
-        expires,
-        permissions,
-        declinedPermissions
       } = await Facebook.logInWithReadPermissionsAsync({
         permissions: ["public_profile", "email"]
       });
@@ -58,7 +55,8 @@ const LoginScreen = props => {
             console.log(error);
           });
       } else {
-        // type === 'cancel'
+        type === 'cancel'
+        Alert.alert("Login cancelled")
       }
     } catch ({ message }) {
       alert(`Facebook Login Error: ${message}`);
@@ -87,6 +85,7 @@ const LoginScreen = props => {
             console.log(error);
           });
       } else {
+        Alert.alert("Login cancelled")
         return { cancelled: true };
       }
     } catch (e) {

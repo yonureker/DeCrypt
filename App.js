@@ -7,6 +7,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import LoginScreen from './screens/loginScreen'
 import SignupScreen from './screens/signupScreen'
 import ProfileScreen from './screens/profileScreen'
+import PasswordScreen from './screens/passwordScreen'
 
 import * as firebase from "firebase";
 import firebaseConfig from "./config/config";
@@ -22,9 +23,9 @@ const storage = firebase.storage();
 
 firebase.auth().onAuthStateChanged((user) => {
   if (user != null) {
-    return 'Profile'
+    'Authenticated'
   } else {
-    return 'Login'
+    'Not authenticated'
   }
 })
 
@@ -38,10 +39,11 @@ const AppNavigator = createStackNavigator(
   {
     Login: LoginScreen,
     Signup: SignupScreen,
-    Profile: ProfileScreen
+    Profile: ProfileScreen,
+    Password: PasswordScreen
   },
   {
-    initialRouteName: 'Signup'
+    initialRouteName: 'Login'
   }
 );
 

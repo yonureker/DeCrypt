@@ -7,6 +7,7 @@ import ProfilePhoto from "../components/profile/profilePhoto";
 import LinkProviders from "../components/profile/linkProviders";
 
 const ProfileScreen = props => {
+
   const currentUser = firebase.auth().currentUser;
 
   const logoutUser = () =>

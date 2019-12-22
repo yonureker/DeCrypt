@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, TouchableOpacity, StyleSheet, Text, Alert } from "react-native";
 import * as Facebook from "expo-facebook";
 import * as Google from "expo-google-app-auth";
 import * as firebase from "firebase";
+import firebaseConfig from "../../config/config"
 
 import { withNavigation } from "react-navigation";
 
 const LinkProviders = props => {
-
   const linkToFacebook = async () => {
     try {
       await Facebook.initializeAsync("567945563749281");
@@ -36,10 +36,8 @@ const LinkProviders = props => {
   const linkToGoogle = async () => {
     try {
       const result = await Google.logInAsync({
-        iosClientId:
-          "691486029945-ab0tvpd5mcc9kej5s6u8ctip8jv0br5j.apps.googleusercontent.com",
-        androidClientId:
-          "691486029945-m1m7fm641el96u6de6kmsbcfk81kqrt8.apps.googleusercontent.com",
+        iosClientId: firebaseConfig.iosClientId,
+        androidClientId: firebaseConfig.androidClientId,
         scopes: ["profile", "email"]
       });
 
@@ -51,13 +49,15 @@ const LinkProviders = props => {
           .auth()
           .currentUser.linkWithCredential(credential)
           .then(() => Alert.alert("Your Google account is linked."))
-          .then(() => props.navigation.navigate("Profile"))
+          // .then(() => props.navigation.navigate("Profile"))
           .catch(error => {
             Alert.alert(error);
           });
       } else {
         return { cancelled: true };
       }
+
+      // props.navigation.navigate("Profile")
     } catch (e) {
       return { error: true };
     }
@@ -100,7 +100,7 @@ const LinkProviders = props => {
             key={index}
             style={{ ...styles.button, backgroundColor: "#838888" }}
             onPress={() => {
-              linkToPassword();
+              props.navigation.navigate("Password");
             }}
           >
             <Text style={{ fontSize: 20, color: "#ffffff" }}>
