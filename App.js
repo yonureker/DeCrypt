@@ -14,6 +14,12 @@ import firebaseConfig from "./config/config";
 // initialize firebase with the config file
 firebase.initializeApp(firebaseConfig);
 
+//Reference to the database service
+const database = firebase.database();
+
+//Reference to the storage service
+const storage = firebase.storage();
+
 firebase.auth().onAuthStateChanged((user) => {
   if (user != null) {
     console.log("We are authenticated now!");
