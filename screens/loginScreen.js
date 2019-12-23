@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     width: "100%",
-    minWidth: 350,
+    minWidth: "80%",
     minHeight: 50,
     borderWidth: 1.5,
     borderColor: "#D7DBDD",

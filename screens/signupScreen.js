@@ -86,7 +86,6 @@ const SignupScreen = props => {
       });
 
       if (result.type === "success") {
-        // return console.log(result);
         const credential = firebase.auth.GoogleAuthProvider.credential(
           result.idToken
         );

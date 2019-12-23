@@ -90,9 +90,6 @@ const LinkProviders = props => {
   // props.providers => ["facebook.com", "google.com"]
 
   return toBeLinked().map((provider, index) => {
-    {
-      console.log(counter);
-    }
     switch (provider) {
       case "facebook.com":
         return (

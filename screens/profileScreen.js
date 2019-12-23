@@ -25,12 +25,11 @@ const ProfileScreen = props => {
 
   return (
     <View style={styles.container}>
-      {console.log("rendering profile page")}
       <View style={styles.userInfoContainer}>
         <View style={{ marginBottom: 50 }}>
           <ProfilePhoto currentUser={currentUser}></ProfilePhoto>
         </View>
-        <View style={{ width: "50%" }}>
+        <View style={{ width: "60%" }}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <MaterialIcons name="email" size={32} color="black" />
             <Text style={{ marginLeft: 5 }}>{currentUser.email}</Text>
