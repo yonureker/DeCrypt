@@ -134,8 +134,7 @@ const linkToFacebook = async () => {
 
         firebase
           .auth()
-          **.currentUser.linkWithCredential(credential)**
-          // .then(() => setCounter(counter + 1))
+          .currentUser.linkWithCredential(credential)
           .then(() =>
             props.navigation.navigate("Profile", {
               credential: credential
@@ -171,7 +170,7 @@ const linkToGoogle = async () => {
         );
         firebase
           .auth()
-          **.currentUser.linkWithCredential(credential)**
+          .currentUser.linkWithCredential(credential)
           .then(() =>
             props.navigation.navigate("Profile", {
               credential: credential
@@ -189,6 +188,45 @@ const linkToGoogle = async () => {
     }
   };
 ```
+
+### Adding password to an existing account
+
+```javascript
+const updatePassword = (email, password) => {
+    const credential = firebase.auth.EmailAuthProvider.credential(
+      email,
+      password
+    );
+
+    firebase
+      .auth().currentUser
+      .linkWithCredential(credential)
+      // set new user's name to name
+      .then(() =>
+        firebase.auth().currentUser.updateProfile({
+          password: password
+        })
+      )
+      .then(() => props.navigation.navigate("Profile", {
+        credential: credential
+      }))
+      .then(() => Alert.alert("Password is added to your account."))
+      .catch(function(error) {
+        // Handling errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        if (errorCode == "auth/weak-password") {
+          alert("The password is too weak.");
+        } else {
+          alert(errorMessage);
+        }
+        console.log(error);
+      });
+```
+
+
+
+
 
 
 
