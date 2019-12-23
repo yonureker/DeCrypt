@@ -19,7 +19,8 @@ A basic react native & firebase app that allows merging multiple auth methods in
 * Clone the code and run `npm install`
 * Firebase [config object](https://firebase.google.com/docs/web/setup#config-object) is required to run this project. I have also added iosClientID and androidClientID keys for [Google Log In](https://docs.expo.io/versions/latest/sdk/google/).
 
-```export default firebaseConfig = {
+```
+export default firebaseConfig = {
   apiKey: "",
   authDomain: "",
   databaseURL: "",
@@ -30,3 +31,4 @@ A basic react native & firebase app that allows merging multiple auth methods in
   iosClientId: "",
   androidClientId: "",
 };
+```
