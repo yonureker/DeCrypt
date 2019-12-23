@@ -29,4 +29,4 @@ A basic react native & firebase app that allows merging multiple auth methods in
   appId: "",
   iosClientId: "",
   androidClientId: "",
-};```
+};
