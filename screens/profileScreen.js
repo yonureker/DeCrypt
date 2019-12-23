@@ -7,8 +7,7 @@ import ProfilePhoto from "../components/profile/profilePhoto";
 import LinkProviders from "../components/profile/linkProviders";
 
 const ProfileScreen = props => {
-
-  const currentUser = firebase.auth().currentUser;
+  const [currentUser, setCurrentUser] = useState(firebase.auth().currentUser)
 
   const logoutUser = () =>
     firebase
@@ -24,24 +23,11 @@ const ProfileScreen = props => {
       )
       .then(props.navigation.navigate("Login"));
 
-  const toBeLinked = () => {
-    // the array of all  linking options available
-    const allLinkingOptions = ["facebook.com", "google.com", "password"];
 
-    // the array of already linked login options
-    const alreadyLinked = firebase
-      .auth()
-      .currentUser.providerData.map(el => el.providerId);
-
-    // filter array 2 from array 1 and find not linked login options
-    const notLinkedYet = allLinkingOptions.filter(
-      x => !alreadyLinked.includes(x)
-    );
-    return notLinkedYet;
-  };
 
   return (
     <View style={styles.container}>
+      {console.log('rendering profile page')}
       <View style={styles.userInfoContainer}>
         <View style={{ marginBottom: 50 }}>
           <ProfilePhoto currentUser={currentUser}></ProfilePhoto>
@@ -58,7 +44,7 @@ const ProfileScreen = props => {
         </View>
       </View>
 
-      <LinkProviders providers={toBeLinked()} />
+      <LinkProviders currentUser={currentUser}/>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {

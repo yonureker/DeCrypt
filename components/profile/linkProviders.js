@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { View, TouchableOpacity, StyleSheet, Text, Alert } from "react-native";
 import * as Facebook from "expo-facebook";
 import * as Google from "expo-google-app-auth";
@@ -8,6 +8,25 @@ import firebaseConfig from "../../config/config"
 import { withNavigation } from "react-navigation";
 
 const LinkProviders = props => {
+  const [counter, setCounter] = useState(0)
+
+  const toBeLinked = () => {
+    // the array of all  linking options available
+    const allLinkingOptions = ["facebook.com", "google.com", "password"];
+
+    // the array of already linked login options
+    const alreadyLinked = firebase
+      .auth()
+      .currentUser.providerData.map(el => el.providerId);
+
+    // filter array 2 from array 1 and find not linked login options
+    const notLinkedYet = allLinkingOptions.filter(
+      x => !alreadyLinked.includes(x)
+    );
+
+    return notLinkedYet;
+  };
+
   const linkToFacebook = async () => {
     try {
       await Facebook.initializeAsync("567945563749281");
@@ -20,8 +39,8 @@ const LinkProviders = props => {
         firebase
           .auth()
           .currentUser.linkWithCredential(credential)
+          .then(() => setCounter(counter + 1))
           .then(() => Alert.alert("Your Facebook account is linked."))
-          .then(() => props.navigation.navigate("Profile"))
           .catch(error => {
             Alert.alert(error);
           });
@@ -48,8 +67,8 @@ const LinkProviders = props => {
         firebase
           .auth()
           .currentUser.linkWithCredential(credential)
+          .then(() => setCounter(counter + 1))
           .then(() => Alert.alert("Your Google account is linked."))
-          .then(() => props.navigation.navigate("Profile"))
           .catch(error => {
             Alert.alert(error);
           });
@@ -62,7 +81,8 @@ const LinkProviders = props => {
   };
   // props.providers => ["facebook.com", "google.com"]
 
-  return props.providers.map((provider, index) => {
+  return toBeLinked().map((provider, index) => {
+    {console.log(counter)}
     switch (provider) {
       case "facebook.com":
         return (
