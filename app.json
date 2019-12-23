@@ -25,6 +25,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "A simple React Native & Firebase app that allows merging multiple auth methods into a single account.",
+    "githubUrl": "https://github.com/yonureker/Firebase-Social-Auth"
   }
 }
