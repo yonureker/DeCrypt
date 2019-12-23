@@ -3,7 +3,7 @@ import { TouchableOpacity, StyleSheet, Text, Alert } from "react-native";
 import * as Facebook from "expo-facebook";
 import * as Google from "expo-google-app-auth";
 import * as firebase from "firebase";
-import firebaseConfig from "../../config/config";
+import clientId from "../../config/clientId";
 
 import { withNavigation } from "react-navigation";
 
@@ -58,8 +58,8 @@ const LinkProviders = props => {
   const linkToGoogle = async () => {
     try {
       const result = await Google.logInAsync({
-        iosClientId: firebaseConfig.iosClientId,
-        androidClientId: firebaseConfig.androidClientId,
+        iosClientId: clientId.iosClientId,
+        androidClientId: clientId.androidClientId,
         scopes: ["profile", "email"]
       });
 

@@ -1,10 +1,8 @@
 ## React Native | Firebase Login Starter
 
-A basic react native & firebase app that allows merging multiple auth methods into a single account.
+A simple React Native & Firebase app that allows merging multiple auth methods into a single account.
 
 ![Image](https://i.imgur.com/uhVfFTf.png)
-
-:factory: Built with Firebase and React Native.
 
 ### Dependencies
 
