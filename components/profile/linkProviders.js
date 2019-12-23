@@ -70,7 +70,6 @@ const LinkProviders = props => {
         firebase
           .auth()
           .currentUser.linkWithCredential(credential)
-          // .then(() => setCounter(counter + 1))
           .then(() =>
             props.navigation.navigate("Profile", {
               credential: credential

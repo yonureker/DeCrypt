@@ -19,7 +19,7 @@ A simple React Native & Firebase app that allows merging multiple auth methods i
 * Clone the code and run `npm install`
 * Firebase [config object](https://firebase.google.com/docs/web/setup#config-object) is required to run this project. I have also added iosClientID and androidClientID keys for [Google Log In](https://docs.expo.io/versions/latest/sdk/google/).
 
-```
+```javascript
 export default firebaseConfig = {
   apiKey: "",
   authDomain: "",
@@ -37,7 +37,7 @@ export default firebaseConfig = {
 
 ### Facebook Login
 
-```
+```javascript
 const loginWithFacebook = async () => {
     try {
       await Facebook.initializeAsync("567945563749281");
@@ -66,7 +66,7 @@ const loginWithFacebook = async () => {
 
 ### Google Log In:
 
-```
+```javascript
 const loginWithGoogle = async () => {
     try {
       const result = await Google.logInAsync({
@@ -98,7 +98,7 @@ const loginWithGoogle = async () => {
 
 ### Login with Email and Password
 
-```
+```javascript
 const loginUser = (email, password) => {
     firebase
       .auth()
@@ -122,7 +122,7 @@ const loginUser = (email, password) => {
 
 ### Linking Facebook login
 
-```
+```javascript
 const linkToFacebook = async () => {
     try {
       await Facebook.initializeAsync("567945563749281");
@@ -153,6 +153,43 @@ const linkToFacebook = async () => {
     }
   };
 ```
+
+### Linking Google Login
+
+```javascript
+const linkToGoogle = async () => {
+    try {
+      const result = await Google.logInAsync({
+        iosClientId: clientId.iosClientId,
+        androidClientId: clientId.androidClientId,
+        scopes: ["profile", "email"]
+      });
+
+      if (result.type === "success") {
+        const credential = firebase.auth.GoogleAuthProvider.credential(
+          result.idToken
+        );
+        firebase
+          .auth()
+          **.currentUser.linkWithCredential(credential)**
+          .then(() =>
+            props.navigation.navigate("Profile", {
+              credential: credential
+            })
+          )
+          .then(() => Alert.alert("Your Google account is linked."))
+          .catch(error => {
+            Alert.alert(error);
+          });
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      return { error: true };
+    }
+  };
+```
+
 
 
 
