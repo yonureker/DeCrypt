@@ -4,7 +4,7 @@ A basic react native & firebase app that allows merging multiple auth methods in
 
 :factory: Built with Firebase and React Native.
 
-# Dependencies
+### Dependencies
 
 * react-native (Frontend)
 * firebase (User management)
