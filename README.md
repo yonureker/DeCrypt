@@ -2,7 +2,7 @@
 
 A basic react native & firebase app that allows merging multiple auth methods into a single account.
 
-![Image](https://i.ibb.co/Zx88tCy/firebase-multiple-auth.png)
+![Image](https://i.imgur.com/uhVfFTf.png)
 
 :factory: Built with Firebase and React Native.
 
@@ -34,6 +34,7 @@ export default firebaseConfig = {
   androidClientId: "",
 };
 ```
+
 
 
 
