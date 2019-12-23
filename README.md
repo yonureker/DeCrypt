@@ -4,6 +4,10 @@ A simple React Native & Firebase app that allows merging multiple auth methods i
 
 ![Image](https://i.imgur.com/uhVfFTf.png)
 
+### Demo
+
+![Image](https://i.imgur.com/KkKjrrS.gifv)
+
 ### Dependencies
 
 - react-native (Frontend)
