@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
-  Button,
   StyleSheet,
   TouchableOpacity,
   Alert
@@ -38,10 +37,7 @@ const LoginScreen = props => {
   const loginWithFacebook = async () => {
     try {
       await Facebook.initializeAsync("567945563749281");
-      const {
-        type,
-        token,
-      } = await Facebook.logInWithReadPermissionsAsync({
+      const { type, token } = await Facebook.logInWithReadPermissionsAsync({
         permissions: ["public_profile", "email"]
       });
       if (type === "success") {
@@ -55,8 +51,8 @@ const LoginScreen = props => {
             console.log(error);
           });
       } else {
-        type === 'cancel'
-        Alert.alert("Login cancelled")
+        type === "cancel";
+        Alert.alert("Login cancelled");
       }
     } catch ({ message }) {
       alert(`Facebook Login Error: ${message}`);
@@ -85,7 +81,7 @@ const LoginScreen = props => {
             console.log(error);
           });
       } else {
-        Alert.alert("Login cancelled")
+        Alert.alert("Login cancelled");
         return { cancelled: true };
       }
     } catch (e) {

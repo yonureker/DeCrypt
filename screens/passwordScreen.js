@@ -21,7 +21,9 @@ const PasswordScreen = props => {
           password: password
         })
       )
-      .then(() => props.navigation.navigate("Profile"))
+      .then(() => props.navigation.navigate("Profile", {
+        credential: credential
+      }))
       .then(() => Alert.alert("Password is added to your account."))
       .catch(function(error) {
         // Handling errors here.

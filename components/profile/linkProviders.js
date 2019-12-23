@@ -1,15 +1,13 @@
-import React, {useState} from "react";
-import { View, TouchableOpacity, StyleSheet, Text, Alert } from "react-native";
+import React from "react";
+import { TouchableOpacity, StyleSheet, Text, Alert } from "react-native";
 import * as Facebook from "expo-facebook";
 import * as Google from "expo-google-app-auth";
 import * as firebase from "firebase";
-import firebaseConfig from "../../config/config"
+import firebaseConfig from "../../config/config";
 
 import { withNavigation } from "react-navigation";
 
 const LinkProviders = props => {
-  const [counter, setCounter] = useState(0)
-
   const toBeLinked = () => {
     // the array of all  linking options available
     const allLinkingOptions = ["facebook.com", "google.com", "password"];
@@ -39,7 +37,12 @@ const LinkProviders = props => {
         firebase
           .auth()
           .currentUser.linkWithCredential(credential)
-          .then(() => setCounter(counter + 1))
+          // .then(() => setCounter(counter + 1))
+          .then(() =>
+            props.navigation.navigate("Profile", {
+              credential: credential
+            })
+          )
           .then(() => Alert.alert("Your Facebook account is linked."))
           .catch(error => {
             Alert.alert(error);
@@ -67,7 +70,12 @@ const LinkProviders = props => {
         firebase
           .auth()
           .currentUser.linkWithCredential(credential)
-          .then(() => setCounter(counter + 1))
+          // .then(() => setCounter(counter + 1))
+          .then(() =>
+            props.navigation.navigate("Profile", {
+              credential: credential
+            })
+          )
           .then(() => Alert.alert("Your Google account is linked."))
           .catch(error => {
             Alert.alert(error);
@@ -82,7 +90,9 @@ const LinkProviders = props => {
   // props.providers => ["facebook.com", "google.com"]
 
   return toBeLinked().map((provider, index) => {
-    {console.log(counter)}
+    {
+      console.log(counter);
+    }
     switch (provider) {
       case "facebook.com":
         return (

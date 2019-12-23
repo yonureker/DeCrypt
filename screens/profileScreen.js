@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import * as firebase from "firebase";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -7,7 +7,7 @@ import ProfilePhoto from "../components/profile/profilePhoto";
 import LinkProviders from "../components/profile/linkProviders";
 
 const ProfileScreen = props => {
-  const [currentUser, setCurrentUser] = useState(firebase.auth().currentUser)
+  const [currentUser, setCurrentUser] = useState(firebase.auth().currentUser);
 
   const logoutUser = () =>
     firebase
@@ -23,11 +23,9 @@ const ProfileScreen = props => {
       )
       .then(props.navigation.navigate("Login"));
 
-
-
   return (
     <View style={styles.container}>
-      {console.log('rendering profile page')}
+      {console.log("rendering profile page")}
       <View style={styles.userInfoContainer}>
         <View style={{ marginBottom: 50 }}>
           <ProfilePhoto currentUser={currentUser}></ProfilePhoto>
@@ -44,7 +42,7 @@ const ProfileScreen = props => {
         </View>
       </View>
 
-      <LinkProviders currentUser={currentUser}/>
+      <LinkProviders currentUser={currentUser} />
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
