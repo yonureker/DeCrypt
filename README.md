@@ -241,3 +241,5 @@ const updatePassword = (email, password) => {
       console.log(error);
     });
 ```
+
+Built with :heart: by Onur Eker.
