@@ -242,4 +242,4 @@ const updatePassword = (email, password) => {
     });
 ```
 
-Built with :heart: by Onur Eker.
+Built with :heart: by Onur Eker. 2019.
