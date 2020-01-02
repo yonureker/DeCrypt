@@ -13,7 +13,7 @@ import * as firebase from "firebase";
 import firebaseConfig from "./config/config";
 
 // initialize firebase with the config file
-firebase.initializeApp(firebaseConfig);
+
 
 //Reference to the database service
 const database = firebase.database();

@@ -1,4 +1,6 @@
-export default firebaseConfig = {
+import * as firebase from "firebase";
+
+const firebaseConfig = {
   apiKey: "AIzaSyDRkGMKstC58HU98BXY7H1u7nEoAbxB528",
   authDomain: "test-31908.firebaseapp.com",
   databaseURL: "https://test-31908.firebaseio.com",
@@ -7,3 +9,5 @@ export default firebaseConfig = {
   messagingSenderId: "745878790599",
   appId: "1:745878790599:web:ed60d4bdb994ba1660b9e2",
 };
+
+export default !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
