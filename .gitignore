@@ -13,9 +13,4 @@ web-report/
 # macOS
 .DS_Store
 
-# remove API keys
-config.js
-
-*config*
-
 
