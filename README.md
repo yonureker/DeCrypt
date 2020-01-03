@@ -2,6 +2,10 @@
 
 A simple React Native & Firebase app that allows merging multiple auth methods into a single account.
 
+## Live Demo
+
+View live demo [here](https://snack.expo.io/@git/github.com/yonureker/Firebase-Social-Auth)
+
 ![Image](https://i.imgur.com/uhVfFTf.png)
 
 ### UI - Android
